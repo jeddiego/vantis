@@ -3,7 +3,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.test.vantis.MainViewModel" />
+            type="com.test.vantis.viewmodels.MainViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/margin_16dp"
-        tools:context=".MainActivity">
+        tools:context=".activities.MainActivity">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilStartDate"

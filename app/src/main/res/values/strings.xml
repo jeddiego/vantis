@@ -6,4 +6,10 @@
     <string name="generar_reporte">Generar reporte</string>
     <string name="error_start_date">La fecha inicial no puede ser mayor a la fecha final</string>
     <string name="error_end_date">La fecha final no puede ser mayor a la fecha actual</string>
+    <string name="retrofit_error_unproccess">La petición no se pudo procesar\n(%s)</string>
+    <string name="retrofit_error_timeout">Tiempo de espera excedido</string>
+    <string name="retrofit_error_server">Error al conectarse al servidor\n(%s)</string>
+    <string name="no_internet">No tienes acceso a internet</string>
+    <string name="retrofit_error_body">Error al leer respuesta del servidor</string>
+
 </resources>
