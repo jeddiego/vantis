@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Vantis</string>
+    <string name="fecha_de_inicio">fecha de inicio</string>
+    <string name="fecha_final">Fecha final</string>
+    <string name="result">Result</string>
+    <string name="generar_reporte">Generar reporte</string>
+    <string name="error_start_date">La fecha inicial no puede ser mayor a la fecha final</string>
+    <string name="error_end_date">La fecha final no puede ser mayor a la fecha actual</string>
+</resources>
