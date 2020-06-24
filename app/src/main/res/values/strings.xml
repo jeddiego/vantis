@@ -11,5 +11,6 @@
     <string name="retrofit_error_server">Error al conectarse al servidor\n(%s)</string>
     <string name="no_internet">No tienes acceso a internet</string>
     <string name="retrofit_error_body">Error al leer respuesta del servidor</string>
+    <string name="error_dates">Por favor elige una fecha</string>
 
 </resources>

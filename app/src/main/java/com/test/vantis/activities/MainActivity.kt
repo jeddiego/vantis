@@ -2,58 +2,50 @@ package com.test.vantis.activities
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProviders
 import com.test.vantis.viewmodels.MainViewModel
 import com.test.vantis.R
 import com.test.vantis.databinding.ActivityMainBinding
-import java.text.SimpleDateFormat
+import com.test.vantis.rest.models.OnMainResponse
 import java.util.*
+import androidx.lifecycle.Observer
+import com.test.vantis.di.components.DaggerViewModelComponent
+import com.test.vantis.di.modules.ContextModule
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    @Inject
+    lateinit var viewModel: MainViewModel
     private var startDate = ""
     private var endDate = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel =  ViewModelProviders.of(this).get(MainViewModel::class.java)
-        binding = DataBindingUtil.setContentView(this,
+        binding = DataBindingUtil.setContentView(
+            this,
             R.layout.activity_main
         )
+        DaggerViewModelComponent.builder().contextModule(ContextModule(this)).build().inject(this)
         binding.viewModel = viewModel
-
+        bindView()
         binding.etStartDate.onFocusChangeListener =
-            OnFocusChangeListener { view, hasFocus ->
+            OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     picker(true)
                 }
             }
 
         binding.etEndDate.onFocusChangeListener =
-            OnFocusChangeListener { view, hasFocus ->
+            OnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
                     picker(false)
                 }
             }
-
-        binding.btGenerateReport.setOnClickListener {
-            val formatter = SimpleDateFormat("yyyy-MM-dd")
-            val date = Date()
-            val currentDate = formatter.format(date)
-
-            if(startDate > endDate){
-                showMessage(getString(R.string.error_start_date))
-            } else if(endDate > currentDate){
-                showMessage(getString(R.string.error_end_date))
-            } else {
-                showMessage("Todo bien")
-            }
-        }
     }
 
     fun picker(startDate: Boolean) {
@@ -64,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         val dpd = DatePickerDialog(
             this,
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                 val fMonth = if (monthOfYear < 9) {
                     "0" + (monthOfYear + 1)
                 } else {
@@ -93,7 +85,18 @@ class MainActivity : AppCompatActivity() {
         dpd.show()
     }
 
-    fun showMessage(message: String){
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun bindView(){
+        viewModel.getData.observe(this, Observer(this::setData))
     }
+
+    private fun setData(response: OnMainResponse) {
+        if(response.codeMessage == "0") {
+            binding.tvResult.visibility = View.VISIBLE
+            binding.tvResult.text =
+                "responseObject: ${response.responseObject}\ncodeMessage: ${response.codeMessage}\nresponseMessage: ${response.responseMessage}"
+        } else {
+            Toast.makeText(this, response.responseMessage, Toast.LENGTH_LONG).show()
+        }
+    }
+
 }
